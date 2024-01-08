@@ -1,3 +1,7 @@
+import 'models/book.dart';
+
+export 'libgen/lib_gen.dart';
+
 abstract class SearchExtension {
-  String search(String query);
+  Future<List<BookSearchGroup>> search(String query);
 }
