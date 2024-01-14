@@ -10,7 +10,7 @@ class BookSearchResult {
   String language;
   String filetype;
   String? filesize;
-  String disambiguation;
+  String edition;
   String year;
   String publisher;
   List<String>? ids;
@@ -22,11 +22,11 @@ class BookSearchResult {
     required this.pages,
     required this.language,
     required this.filetype,
-    required this.disambiguation,
     required this.extension,
     required this.year,
     required this.publisher,
     required this.filesize,
+    required this.edition,
     this.ids,
   });
 
@@ -36,10 +36,10 @@ class BookSearchResult {
         pages = '',
         language = '',
         filetype = '',
-        disambiguation = '',
         extension = '',
         year = '',
-        publisher = '';
+        publisher = '',
+        edition = '';
 
   bool compareIds(List<String> ids) {
     if (this.ids == null) {

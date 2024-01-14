@@ -54,6 +54,9 @@ class LibGenExtension implements SearchExtension {
           'Publisher': () => book.publisher = tds[i].text,
           'ISBN': () => book.appendIds(listText),
           'ID': () => book.appendIds(listText),
+          'Edition': () {
+            book.edition = tds[i].text;
+          },
           'Size': () {
             final listText = tds[i].text.split(' ');
 
