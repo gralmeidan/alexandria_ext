@@ -1,11 +1,11 @@
 import '../helpers/extensions.dart';
-import 'author.dart';
+import '../lib_browser_extensions.dart';
 
 class BookSearchResult {
+  final SearchExtension extension;
   String? cover;
   String title;
   Author author;
-  String extension;
   String pages;
   String language;
   String filetype;
@@ -14,32 +14,23 @@ class BookSearchResult {
   String year;
   String publisher;
   List<String>? ids;
+  String? href;
 
   BookSearchResult({
-    required this.cover,
-    required this.title,
-    required this.author,
-    required this.pages,
-    required this.language,
-    required this.filetype,
     required this.extension,
-    required this.year,
-    required this.publisher,
-    required this.filesize,
-    required this.edition,
+    this.cover = '',
+    this.title = '',
+    this.pages = '',
+    this.language = '',
+    this.filetype = '',
+    this.year = '',
+    this.publisher = '',
+    this.filesize = '',
+    this.edition = '',
     this.ids,
-  });
-
-  BookSearchResult.empty()
-      : title = '',
-        author = Author(''),
-        pages = '',
-        language = '',
-        filetype = '',
-        extension = '',
-        year = '',
-        publisher = '',
-        edition = '';
+    this.href,
+    Author? author,
+  }) : author = author ?? Author('');
 
   bool compareIds(List<String> ids) {
     if (this.ids == null) {
