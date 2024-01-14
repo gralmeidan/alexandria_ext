@@ -2,29 +2,44 @@ import '../helpers/extensions.dart';
 import 'author.dart';
 
 class BookSearchResult {
-  final String title;
-  final Author author;
-  final String extension;
-  final String pages;
-  final String language;
-  final String filetype;
-  final String disambiguity;
-  final String year;
-  final String publisher;
-  final List<String>? ids;
+  String? cover;
+  String title;
+  Author author;
+  String extension;
+  String pages;
+  String language;
+  String filetype;
+  String? filesize;
+  String disambiguation;
+  String year;
+  String publisher;
+  List<String>? ids;
 
   BookSearchResult({
+    required this.cover,
     required this.title,
     required this.author,
     required this.pages,
     required this.language,
     required this.filetype,
-    required this.disambiguity,
+    required this.disambiguation,
     required this.extension,
     required this.year,
     required this.publisher,
+    required this.filesize,
     this.ids,
   });
+
+  BookSearchResult.empty()
+      : title = '',
+        author = Author(''),
+        pages = '',
+        language = '',
+        filetype = '',
+        disambiguation = '',
+        extension = '',
+        year = '',
+        publisher = '';
 
   bool compareIds(List<String> ids) {
     if (this.ids == null) {
@@ -38,6 +53,14 @@ class BookSearchResult {
     }
 
     return false;
+  }
+
+  void appendIds(List<String> ids) {
+    if (this.ids == null) {
+      this.ids = [];
+    }
+
+    this.ids!.addAll(ids);
   }
 }
 
