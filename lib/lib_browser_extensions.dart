@@ -1,4 +1,4 @@
-import 'models/book.dart';
+import 'models/search.dart';
 
 export 'libgen/lib_gen.dart';
 export 'models/models.dart';
