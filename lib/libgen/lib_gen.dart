@@ -4,7 +4,9 @@ import 'package:html/dom.dart';
 import '../lib_browser_extensions.dart';
 
 class LibGenExtension implements SearchExtension {
+  @override
   final name = 'libgen.is';
+
   final dio = Dio()..options.baseUrl = 'https://www.libgen.is';
 
   @override
@@ -31,15 +33,21 @@ class LibGenExtension implements SearchExtension {
       book.cover = tds[1].querySelector('img')?.attributes['src'];
       book.extension = name;
 
+      if (book.cover != null) {
+        book.cover = '${dio.options.baseUrl}${book.cover}';
+      }
+
       for (var i = 2; i < tds.length; i++) {
         final previous = tds[i - 1].text;
 
-        final listText = tds[i].text.split(', ').map((e) => e.trim()).toList();
+        final listText = tds[i].text.split(',').map((e) => e.trim()).toList();
 
         final switchHash = {
           'Title': () => book.title = tds[i].text,
           'Author': () => book.author = Author(tds[i].text),
-          'Pages': () => book.pages = tds[i].text,
+          'Pages': () {
+            book.pages = RegExp(r'\d+').firstMatch(tds[i].text)?.group(0) ?? '';
+          },
           'Language': () => book.language = tds[i].text,
           'Extension': () => book.filetype = tds[i].text,
           'Year': () => book.year = tds[i].text,
@@ -47,10 +55,10 @@ class LibGenExtension implements SearchExtension {
           'ISBN': () => book.appendIds(listText),
           'ID': () => book.appendIds(listText),
           'Size': () {
-            if (listText.length > 1) {
-              final [size, unit] = listText;
+            final listText = tds[i].text.split(' ');
 
-              book.extension = '$size $unit';
+            if (listText.length > 1) {
+              book.filesize = '${listText[0]} ${listText[1]}';
             }
           },
         };
