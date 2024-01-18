@@ -16,4 +16,7 @@ class LibGenMirror extends BookMirror {
     // TODO: implement download
     throw UnimplementedError();
   }
+
+  @override
+  bool get hasAutodownload => uri.toString().contains('http');
 }

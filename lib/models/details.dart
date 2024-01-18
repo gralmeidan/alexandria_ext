@@ -48,6 +48,8 @@ abstract class BookMirror {
   final String label;
   final Uri uri;
 
+  bool get hasAutodownload;
+
   Future<void> download(BuildContext context);
 
   const BookMirror({
