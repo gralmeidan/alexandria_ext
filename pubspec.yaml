@@ -10,6 +10,7 @@ dependencies:
   dio: ^5.4.0
   flutter:
     sdk: flutter
+  flutter_downloader: ^1.11.6
   html: ^0.15.4
 
 dev_dependencies:

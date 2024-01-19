@@ -1,3 +1,5 @@
+import 'package:flutter_downloader/flutter_downloader.dart';
+
 import 'models/details.dart';
 import 'models/search.dart';
 
@@ -9,4 +11,11 @@ abstract class SearchExtension {
 
   Future<List<BookSearchGroup>> search(String query);
   Future<BookDetails> details(BookSearchResult result);
+}
+
+Future<void> init() async {
+  await FlutterDownloader.initialize(
+    debug: true,
+    ignoreSsl: true,
+  );
 }

@@ -48,12 +48,16 @@ abstract class BookMirror {
   final String label;
   final Uri uri;
 
-  bool get hasAutodownload;
-
-  Future<void> download(BuildContext context);
-
   const BookMirror({
     required this.label,
     required this.uri,
   });
+
+  Future<void> Function(BuildContext context)? getDownloadCallback();
+
+  Future<void> download(BuildContext context) async {
+    return getDownloadCallback()?.call(context);
+  }
+
+  bool get hasAutodownload => getDownloadCallback() != null;
 }
