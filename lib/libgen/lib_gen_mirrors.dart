@@ -18,11 +18,14 @@ class LibGenMirror extends BookMirror {
           uri: uri,
         );
 
-  void _directDownload(String url) async {
+  Future<void> _directDownload({
+    required String url,
+    required String savedDir,
+  }) async {
     final taskId = await FlutterDownloader.enqueue(
       url: url,
       headers: {},
-      savedDir: '/storage/emulated/0/Download',
+      savedDir: savedDir,
       showNotification: true,
       openFileFromNotification: true,
       saveInPublicStorage: true,
@@ -31,34 +34,44 @@ class LibGenMirror extends BookMirror {
     log('Downloading $uri with task id $taskId');
   }
 
-  Future<void> _downloadLibraryLol(BuildContext _) async {
+  Future<String?> _getLibraryLolHref() async {
     final page = await dio.getUri(uri);
     final html = Document.html(page.data);
 
     final anchor = html.querySelector('#download a');
-    final href = anchor?.attributes['href'] ?? '';
 
-    return _directDownload(href);
+    return anchor?.attributes['href'];
   }
 
-  Future<void> _downloadLibgen(BuildContext _) async {
+  Future<String?> _getLibgenHref() async {
     final page = await dio.getUri(uri);
     final html = Document.html(page.data);
 
     final anchor = html.querySelectorAll(r'table a').firstWhere((element) {
       return element.querySelector('h2') != null;
     });
-    final href = anchor.attributes['href'] ?? '';
 
-    return _directDownload(href);
+    return anchor.attributes['href'];
   }
 
   @override
-  Future<void> Function(BuildContext context)? getDownloadCallback() {
+  Future<void> download(BuildContext context, {required String path}) async {
+    final href = await getDownloadInfo()?.call();
+
+    if (href != null) {
+      return _directDownload(
+        url: href,
+        savedDir: path,
+      );
+    }
+  }
+
+  @override
+  Future<String?> Function()? getDownloadInfo() {
     if (uri.path.startsWith('/main')) {
-      return _downloadLibraryLol;
+      return _getLibraryLolHref;
     } else if (uri.host.contains('libgen') && uri.query.contains('md5=')) {
-      return _downloadLibgen;
+      return _getLibgenHref;
     }
 
     return null;

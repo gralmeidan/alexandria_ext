@@ -53,11 +53,9 @@ abstract class BookMirror {
     required this.uri,
   });
 
-  Future<void> Function(BuildContext context)? getDownloadCallback();
+  dynamic getDownloadInfo();
 
-  Future<void> download(BuildContext context) async {
-    return getDownloadCallback()?.call(context);
-  }
+  Future<void> download(BuildContext context, {required String path});
 
-  bool get hasAutodownload => getDownloadCallback() != null;
+  bool get hasAutodownload => getDownloadInfo() != null;
 }
