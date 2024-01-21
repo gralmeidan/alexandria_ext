@@ -26,9 +26,8 @@ class LibGenMirror extends BookMirror {
       url: url,
       headers: {},
       savedDir: savedDir,
-      showNotification: true,
       openFileFromNotification: true,
-      saveInPublicStorage: true,
+      showNotification: true,
     );
 
     log('Downloading $uri with task id $taskId');
