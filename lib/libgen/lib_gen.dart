@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:html/dom.dart';
 
 import '../lib_browser_extensions.dart';
-import '../models/details.dart';
 import 'lib_gen_mirrors.dart';
 
 class LibGenExtension implements SearchExtension {
@@ -32,9 +31,11 @@ class LibGenExtension implements SearchExtension {
 
       final switchHash = {
         'Title': () {
-          book.title = tds[i].text;
-          book.href =
-              baseUri.resolve(tds[i].querySelector('a')?.attributes['href'] ?? '').toString();
+          if (book.title.isEmpty) {
+            book.title = tds[i].text;
+            book.href =
+                baseUri.resolve(tds[i].querySelector('a')?.attributes['href'] ?? '').toString();
+          }
         },
         'Author': () => book.author = Author(tds[i].text),
         'Pages': () {
@@ -119,7 +120,10 @@ class LibGenExtension implements SearchExtension {
 
     return BookDetails.fromSuper(
       _scrapeDataFromDetailedTable(table),
-      description: table.querySelectorAll('tbody > tr > :only-child')[1].text,
+      description: table.querySelectorAll('tbody > tr > :only-child')[1].text.replaceAllMapped(
+            RegExp(r'(\S{3,}\.)\s+([A-Z])'),
+            (Match m) => '${m[1]}\n\n${m[2]}',
+          ),
       mirrors: mirrors,
     );
   }
