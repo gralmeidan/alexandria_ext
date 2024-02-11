@@ -17,3 +17,27 @@ extension StringHelpers on String {
     );
   }
 }
+
+extension ListHelpers<T> on List<T>? {
+  T? at(int index) {
+    final self = this;
+
+    if (self != null && index >= 0 && index < self.length) {
+      return self[index];
+    }
+
+    return null;
+  }
+}
+
+extension MapHelpers<T, D> on Map<T, D>? {
+  D? at(T key) {
+    final self = this;
+
+    if (self?.containsKey(key) == true) {
+      return self![key];
+    }
+
+    return null;
+  }
+}
