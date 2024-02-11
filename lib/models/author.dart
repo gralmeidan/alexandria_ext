@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../helpers/helpers.dart';
 
 class Author {
@@ -16,8 +18,8 @@ class Author {
       return true;
     }
 
-    final aNames = a.replaceAll(',', '').split(' ')..sort();
-    final bNames = b.replaceAll(',', '').split(' ')..sort();
+    final aNames = a.replaceAll(',', '').split(' ').where((str) => str.isNotEmpty).toList()..sort();
+    final bNames = b.replaceAll(',', '').split(' ').where((str) => str.isNotEmpty).toList()..sort();
 
     if (aNames.length != bNames.length) {
       return false;
@@ -40,26 +42,31 @@ class Author {
   }
 
   bool isEqual(Author other) {
-    final myAuthors = name.split(';')..sort();
-    final otherAUthors = other.name.split(';')..sort();
+    try {
+      final myAuthors = name.split(';')..sort();
+      final otherAUthors = other.name.split(';')..sort();
 
-    if (myAuthors.length != otherAUthors.length) {
+      if (myAuthors.length != otherAUthors.length) {
+        return false;
+      }
+
+      bool areAuthorsEqual = true;
+
+      for (var i = 0; i < myAuthors.length; i++) {
+        areAuthorsEqual = areAuthorsEqual &&
+            _areIndividualNamesEqual(
+              myAuthors[i],
+              otherAUthors[i],
+            );
+
+        if (!areAuthorsEqual) return false;
+      }
+
+      return areAuthorsEqual;
+    } catch (e) {
+      log('Error on Author.isEqual $e', stackTrace: (e as Error).stackTrace);
       return false;
     }
-
-    bool areAuthorsEqual = true;
-
-    for (var i = 0; i < myAuthors.length; i++) {
-      areAuthorsEqual = areAuthorsEqual &&
-          _areIndividualNamesEqual(
-            myAuthors[i],
-            otherAUthors[i],
-          );
-
-      if (!areAuthorsEqual) return false;
-    }
-
-    return areAuthorsEqual;
   }
 
   @override

@@ -47,11 +47,15 @@ class BookSearchResult {
   }
 
   void appendIds(List<String> ids) {
-    if (this.ids == null) {
-      this.ids = [];
-    }
-
+    this.ids ??= [];
     this.ids!.addAll(ids);
+  }
+
+  void appendId(String? id) {
+    if (id == null) return;
+
+    ids ??= [];
+    ids!.add(id);
   }
 }
 
