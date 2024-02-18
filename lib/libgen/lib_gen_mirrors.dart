@@ -11,12 +11,9 @@ class LibGenMirror extends BookMirror {
   final dio = Dio();
 
   LibGenMirror({
-    required String label,
-    required Uri uri,
-  }) : super(
-          label: label,
-          uri: uri,
-        );
+    required super.label,
+    required super.uri,
+  });
 
   Future<void> _directDownload({
     required String url,
